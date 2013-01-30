@@ -17,7 +17,6 @@ getmetatable("").__mod = function(a, b)
         end
 end
 
-
 --
 -- Date: provides access to os.date with optional custom formatting
 module("vicious.widgets.sensors")
@@ -26,14 +25,15 @@ module("vicious.widgets.sensors")
 local function worker()
 
 --f = io.popen("sensors | awk '/Core 0/ {print($3)}'")
-f = io.popen("sensors | awk '/Core 0/ {print($3)}' | awk -F '[+.]' '{print($2)}'")
+--f = io.popen("sensors | awk '/Core 0/ {print($3)}' | awk -F '[+.]' '{print($2)}'")
+f = io.popen("sensors | grep low | awk '/temp1/ {print $2}' | awk -F '[+.]' '{print($2)}'")
 
 for line in f:lines() do
 coreone = line
 end
 
 --f = io.popen("sensors | awk '/Core 1/ {print($3)}'")
-f = io.popen("sensors | awk '/Core 1/ {print($3)}' | awk -F '[+.]' '{print($2)}'")
+f = io.popen("sensors | awk '/temp2/ {print($2)}' | awk -F '[+.]' '{print($2)}'")
 
 for line in f:lines() do
 coretwo = line

@@ -15,33 +15,33 @@ awful.util.spawn_with_shell("wmname LG3D")
 --{{---| Error handling |---------------------------------------------------------------------------
 
 if awesome.startup_errors then
-naughty.notify({ preset = naughty.config.presets.critical,
-title = "Oops, there were errors during startup!",
-text = awesome.startup_errors })
+  naughty.notify({ preset = naughty.config.presets.critical,
+  title = "Oops, there were errors during startup!",
+  text = awesome.startup_errors })
 end
 do
 local in_error = false
 awesome.add_signal("debug::error", function (err)
 if in_error then return end
-in_error = true
-naughty.notify({ preset = naughty.config.presets.critical,
-title = "Oops, an error happened!",
-text = err })
-in_error = false
+  in_error = true
+  naughty.notify({ preset = naughty.config.presets.critical,
+  title = "Oops, an error happened!",
+  text = err })
+  in_error = false
 end)
 end
 
 --{{---| Theme |------------------------------------------------------------------------------------
 
-config_dir = ("/home/rom/.config/awesome/")
+config_dir = ("/home/shauder/.config/awesome/")
 themes_dir = (config_dir .. "/themes")
 beautiful.init(themes_dir .. "/powerarrow/theme.lua")
 
 --{{---| Variables |--------------------------------------------------------------------------------
 
 modkey        = "Mod4"
-terminal      = "terminal --geometry=164x50+101+60"
-terminalr     = "sudo terminal --default-working-directory=/root/ --geometry=200x49+80+36"
+terminal      = "urxvt"
+terminalr     = terminal .. " -e sudo su" 
 configuration = "TERM=screen-256color lilyterm -T 'Awesome Configuration' -g 228x62+0+16 -x ~/.gem/ruby/1.9.1/bin/mux start configuration"
 rttmux        = "sudo terminal --geometry=220x59+20+36 --default-working-directory=/root/ -x tmux -2"
 ttmux         = "lilyterm -T tmux -g 221x60+20+36 -e tmux -2"
@@ -54,7 +54,7 @@ mailmutt      = "lilyterm -T 'Mutt' -g 140x44-20+34 -e mutt"
 chat          = "TERM=screen-256color lilyterm -T 'Chat' -g 228x62+0+16 -x ~/.gem/ruby/1.9.1/bin/mux start chat"
 editor        = os.getenv("EDITOR") or "vim"
 editor_cmd    = terminal .. " -e " .. editor
-browser       = "firefox"
+browser       = "google-chrome"
 fm            = "spacefm"
 
 --{{---| Couth Alsa volume applet |-----------------------------------------------------------------
@@ -86,14 +86,13 @@ naughty.config.presets.critical.opacity    = 0.8
 
 tags = {}
 for s = 1, screen.count() do
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, layouts[1])
+    tags[s] = awful.tag({ "term", "web", "work", "media", "games" }, s, layouts[1])
 end
-
 --{{---| Menu |-------------------------------------------------------------------------------------
 
 myawesomemenu = {
-  {"edit config",           "terminal -x vim /home/rom/.config/awesome/rc.lua"},
-  {"edit theme",            "terminal -x vim /home/rom/.config/awesome/themes/powerarrow/theme.lua"},
+  {"edit config",           "terminal -x vim /home/shauder/.config/awesome/rc.lua"},
+  {"edit theme",            "terminal -x vim /home/shauder/.config/awesome/themes/powerarrow/theme.lua"},
   {"hibernate",             "sudo pm-hibernate"},
   {"restart",               awesome.restart },
   {"reboot",                "sudo reboot"},
@@ -101,15 +100,20 @@ myawesomemenu = {
 }
 
 docsmenu = {
-  {" C",                    "/home/rom/Tools/doc_c", beautiful.c_icon},
-  {" JavaScript",           "/home/rom/Tools/doc_js", beautiful.js_icon},
-  {" Ruby",                 "/home/rom/Tools/doc_ruby", beautiful.ruby_icon} 
+  {" C",                    "/home/shauder/Tools/doc_c", beautiful.c_icon},
+  {" JavaScript",           "/home/shauder/Tools/doc_js", beautiful.js_icon},
+  {" Ruby",                 "/home/shauder/Tools/doc_ruby", beautiful.ruby_icon} 
+}
+
+gamesmenu = {
+  {" Steam",                "SDL_AUDIODRIVER=alsa steam", beautiful.c_icon},
+  {" Tekkit",               "java -jar /home/shauder/Tekkit/technic-launcher-latest.jar", beautiful.js_icon}
 }
 
 learningmenu = {
-  {" C",                    "/home/rom/Books/C.sh", beautiful.c_icon},
-  {" JavaScript",           "/home/rom/Books/JavaScrip.sh", beautiful.js_icon},
-  {" Ruby On Rails",        "/home/rom/Books/RubyOnRails.sh", beautiful.ruby_icon}
+  {" C",                    "/home/shauder/Books/C.sh", beautiful.c_icon},
+  {" JavaScript",           "/home/shauder/Books/JavaScrip.sh", beautiful.js_icon},
+  {" Ruby On Rails",        "/home/shauder/Books/RubyOnRails.sh", beautiful.ruby_icon}
 }
 
 mybooksmenu = {
@@ -140,27 +144,27 @@ myedumenu = {
   -- {" Celestia",             "celestia", beautiful.celestia_icon},
   -- {" Geogebra",             "geogebra", beautiful.geogebra_icon},
   {" CherryTree",           "cherrytree", beautiful.cherrytree_icon},
-  {" Free42dec",            "/home/rom/Tools/Free42Linux/gtk/free42dec", beautiful.free42_icon},
+  {" Free42dec",            "/home/shauder/Tools/Free42Linux/gtk/free42dec", beautiful.free42_icon},
   {" GoldenDict",           "goldendict", beautiful.goldendict_icon},
   {" Qalculate",            "qalculate-gtk", beautiful.qalculate_icon},
   {" Stellarium",           "stellarium", beautiful.stellarium_icon},
   {" Vym",                  "vym", beautiful.vym_icon},
-  {" Wolfram Mathematica",  "/home/rom/Tools/Wolfram/Mathematica", beautiful.mathematica_icon},
+  {" Wolfram Mathematica",  "/home/shauder/Tools/Wolfram/Mathematica", beautiful.mathematica_icon},
   {" XMind",                "xmind", beautiful.xmind_icon}
 }
 
 mydevmenu = {
   {" Android SDK Updater",  "android", beautiful.android_icon},
-  {" Eclipse",              "/home/rom/Tools/eclipse/eclipse", beautiful.eclipse_icon},
+  {" Eclipse",              "/home/shauder/Tools/eclipse/eclipse", beautiful.eclipse_icon},
   {" Emacs",                "emacs", beautiful.emacs_icon},
-  {" GHex",                 "ghex", beautiful.ghex_icon},	
-  {" IntellijIDEA",         "/home/rom/Tools/idea-IU-123.72/bin/idea.sh", beautiful.ideaUE_icon},
+  {" GHex",                 "ghex", beautiful.ghex_icon}, 
+  {" IntellijIDEA",         "/home/shauder/Tools/idea-IU-123.72/bin/idea.sh", beautiful.ideaUE_icon},
   {" Kdiff3",               "kdiff3", beautiful.kdiff3_icon},
   {" Meld",                 "meld", beautiful.meld_icon},
   {" pgAdmin",              "pgadmin3", beautiful.pgadmin3_icon},
   {" Qt Creator",           "qtcreator", beautiful.qtcreator_icon},
-  {" RubyMine",             "/home/rom/Tools/rubymine.run", beautiful.rubymine_icon},
-  {" SublimeText",          "sublime_text", beautiful.sublime_icon},
+  {" RubyMine",             "/home/shauder/Tools/rubymine.run", beautiful.rubymine_icon},
+  {" SublimeText",          "subl", beautiful.sublime_icon},
   {" Tkdiff",               "tkdiff", beautiful.tkdiff_icon}
 }
 
@@ -174,7 +178,7 @@ mygraphicsmenu = {
   {" recordMyDesktop",      "gtk-recordMyDesktop", beautiful.recordmydesktop_icon},
   {" Screengrab",           "screengrab", beautiful.screengrab_icon},
   {" Xmag",                 "xmag", beautiful.xmag_icon},
-  {" XnView",               "/home/rom/Tools/XnView/xnview.sh", beautiful.xnview_icon}
+  {" XnView",               "/home/shauder/Tools/XnView/xnview.sh", beautiful.xnview_icon}
 }
 
 mymultimediamenu = {
@@ -193,7 +197,7 @@ myofficemenu = {
   {" LibreOffice Calc",     "libreoffice --calc", beautiful.librecalc_icon},
   {" LibreOffice Draw",     "libreoffice --draw", beautiful.libredraw_icon},
   {" LibreOffice Impress",  "libreoffice --impress", beautiful.libreimpress_icon},
-  {" LibreOffice Math",     "libreoffice --math", beautiful.libremath_icon},	
+  {" LibreOffice Math",     "libreoffice --math", beautiful.libremath_icon},  
   {" LibreOffice Writer",   "libreoffice --writer", beautiful.librewriter_icon},
   {" Qpdfview",             "qpdfview", beautiful.qpdfview_icon},
   {" ScanTailor",           "scantailor", beautiful.scantailor_icon},
@@ -202,7 +206,7 @@ myofficemenu = {
 }
 
 mywebmenu = {
-  {" Chromium",             "chromium-browser", beautiful.chromium_icon},
+  {" Chrome",             "google-chrome", beautiful.chromium_icon},
   {" Droppox",              "dropbox", beautiful.dropbox_icon},
   {" Dwb",                  "dwb", beautiful.dwb_icon},
   {" Filezilla",            "filezilla", beautiful.filezilla_icon},
@@ -213,7 +217,7 @@ mywebmenu = {
   {" Opera",                "opera", beautiful.opera_icon},
   {" Qbittorrent",          "qbittorrent", beautiful.qbittorrent_icon},
   {" Skype",                "skype", beautiful.skype_icon},
-  {" Tor",                  "/home/rom/Tools/tor-browser_en-US/start-tor-browser", beautiful.vidalia_icon},
+  {" Tor",                  "/home/shauder/Tools/tor-browser_en-US/start-tor-browser", beautiful.vidalia_icon},
   {" Thunderbird",          "thunderbird", beautiful.thunderbird_icon},
   {" Weechat",              "lilyterm -x weechat-curses", beautiful.weechat_icon}
 }
@@ -230,7 +234,7 @@ mysettingsmenu = {
 mytoolsmenu = {
   {" Gparted",              "sudo gparted", beautiful.gparted_icon},
   {" PeaZip",               "peazip", beautiful.peazip_icon},
-  {" TeamViewer",           "/home/rom/Tools/teamviewer7/teamviewer", beautiful.teamviewer_icon},
+  {" TeamViewer",           "/home/shauder/Tools/teamviewer7/teamviewer", beautiful.teamviewer_icon},
   {" VirtualBox",           "VirtualBox", beautiful.virtualbox_icon},
   {" Windows XP",           'VirtualBox --startvm "cb226b1a-3e7a-4a5c-b336-fc080ff687d1"', beautiful.windows_icon},
   -- {" Vmware Workstation",   "vmware", beautiful.vmware_icon},
@@ -240,11 +244,12 @@ mytoolsmenu = {
 
 mymainmenu = awful.menu({ items = { 
   { " @wesome",             myawesomemenu, beautiful.awesome_icon },
+  {" games",                gamesmenu, beautiful.books_icon},
   {" books",                mybooksmenu, beautiful.books_icon},
   {" development",          mydevmenu, beautiful.mydevmenu_icon},
   {" education",            myedumenu, beautiful.myedu_icon},
   {" graphics",             mygraphicsmenu, beautiful.mygraphicsmenu_icon},
-  {" multimedia",           mymultimediamenu, beautiful.mymultimediamenu_icon},	    
+  {" multimedia",           mymultimediamenu, beautiful.mymultimediamenu_icon},     
   {" office",               myofficemenu, beautiful.myofficemenu_icon},
   {" tools",                mytoolsmenu, beautiful.mytoolsmenu_icon},
   {" web",                  mywebmenu, beautiful.mywebmenu_icon},
@@ -252,8 +257,8 @@ mymainmenu = awful.menu({ items = {
   {" calc",                 "/usr/bin/gcalctool", beautiful.galculator_icon},
   {" htop",                 terminal .. " -x htop", beautiful.htop_icon},
   {" sound",                "qasmixer", beautiful.wmsmixer_icon},
-  {" file manager",         "spacefm", beautiful.spacefm_icon},
-  {" root terminal",        "sudo " .. terminal, beautiful.terminalroot_icon},
+  {" file manager",         fm, beautiful.spacefm_icon},
+  {" root terminal",        terminalr, beautiful.terminalroot_icon},
   {" terminal",             terminal, beautiful.terminal_icon} 
 }
 })
@@ -354,7 +359,7 @@ task_warrior:set_project_icon(beautiful.project_icon)
 --{{---| MEM widget |-------------------------------------------------------------------------------
 
 memwidget = widget({ type = "textbox" })
-vicious.register(memwidget, vicious.widgets.mem, '<span background="#777E76" font="Terminus 12"> <span font="Terminus 9" color="#EEEEEE" background="#777E76">$2MB </span></span>', 13)
+vicious.register(memwidget, vicious.widgets.mem, '<span background="#777E76" font="Terminus 12"> <span font="Terminus 9" color="#EEEEEE" background="#777E76">$2MB  </span></span>', 13)
 memicon = widget ({type = "imagebox" })
 memicon.image = image(beautiful.widget_mem)
 
@@ -379,7 +384,7 @@ terminal   = "terminal --geometry=130x56-10+26"})
 
 fswidget = widget({ type = "textbox" })
 vicious.register(fswidget, vicious.widgets.fs,
-'<span background="#D0785D" font="Terminus 12"> <span font="Terminus 9" color="#EEEEEE">${/mnt/storage avail_gb}GB </span></span>', 8)
+'<span background="#D0785D" font="Terminus 12"> <span font="Terminus 9" color="#EEEEEE">${/ avail_gb}GB </span></span>', 8)
 udisks_glue = blingbling.udisks_glue.new(beautiful.widget_hdd)
 udisks_glue:set_mount_icon(beautiful.accept)
 udisks_glue:set_umount_icon(beautiful.cancel)
@@ -407,8 +412,12 @@ neticon.image = image(beautiful.widget_net)
 netwidget:buttons(awful.util.table.join(awful.button({ }, 1,
 function () awful.util.spawn_with_shell(iptraf) end)))
 
---{{---| Binary Clock |-----------------------------------------------------------------------------
+-- Create a textclock widget
+clockicon = widget({ type = "imagebox"})
+clockicon.image = image(beautiful.widget_clock)
+mytextclock = awful.widget.textclock({ align = "right" })
 
+--{{---| Binary Clock |-----------------------------------------------------------------------------
 binaryclock = {}
 binaryclock.widget = widget({type = "imagebox"})
 binaryclock.w = 42  
@@ -511,10 +520,14 @@ spr3f = widget({ type = "textbox" })
 spr3f.text = '<span background="#777e76" font="Terminus 12"> </span>'
 arr1 = widget ({type = "imagebox" })
 arr1.image = image(beautiful.arr1)
+arr1a = widget ({type = "imagebox" })
+arr1a.image = image(beautiful.arr1a)
 arr2 = widget ({type = "imagebox" })
 arr2.image = image(beautiful.arr2)
 arr3 = widget ({type = "imagebox" })
 arr3.image = image(beautiful.arr3)
+arr3a = widget ({type = "imagebox" })
+arr3a.image = image(beautiful.arr3a)
 arr4 = widget ({type = "imagebox" })
 arr4.image = image(beautiful.arr4)
 arr5 = widget ({type = "imagebox" })
@@ -534,7 +547,47 @@ arr0.image = image(beautiful.arr0)
 --{{---| Panel |------------------------------------------------------------------------------------
 
 mywibox[s] = awful.wibox({ position = "top", screen = s, height = "16" })
-
+if screen.count() > 1 then 
+mywibox[s].widgets = {
+   { mylauncher, mytaglist[s], mypromptbox[s], layout = awful.widget.layout.horizontal.leftright },
+     mylayoutbox[s],
+     s == 2 and arr1,
+     s == 1 and arr1a,
+     s == 2 and spr3f,
+     s == 2 and binaryclock.widget,
+     s == 2 and spr3f, 
+     -- arrl, 
+     -- my_cal.widget,
+     s == 2 and arr2, 
+     netwidget,
+     neticon,
+     -- arr3,
+     -- batwidget,
+     -- baticon,
+     arr3a,
+     -- arr4, 
+     fswidget,
+     udisks_glue.widget,
+     arr5,
+     sensors,
+     tempicon,
+     arr6,
+     cpuwidget,
+     cpuicon,
+     arr7,
+     memwidget,
+     memicon,
+     arr8,
+     task_warrior.widget,
+     arr9,
+     music,
+     arr0,
+     mailicon, 
+     arr9,
+     spr,
+     s == 2 and mysystray, spr or nil, mytasklist[s], 
+     layout = awful.widget.layout.horizontal.rightleft } 
+else
 mywibox[s].widgets = {
    { mylauncher, mytaglist[s], mypromptbox[s], layout = awful.widget.layout.horizontal.leftright },
      mylayoutbox[s],
@@ -547,10 +600,11 @@ mywibox[s].widgets = {
      arr2, 
      netwidget,
      neticon,
-     arr3,
-     batwidget,
-     baticon,
-     arr4, 
+     -- arr3,
+     -- batwidget,
+     -- baticon,
+     arr3a,
+     -- arr4, 
      fswidget,
      udisks_glue.widget,
      arr5,
@@ -571,7 +625,9 @@ mywibox[s].widgets = {
      arr9,
      spr,
      s == 1 and mysystray, spr or nil, mytasklist[s], 
-     layout = awful.widget.layout.horizontal.rightleft } end
+     layout = awful.widget.layout.horizontal.rightleft }
+end
+end
 
 --{{---| Mouse bindings |---------------------------------------------------------------------------
 
@@ -734,12 +790,15 @@ function run_oncewa(prg) if not prg then do return nil end end
 --{{--| Autostart |---------------------------------------------------------------------------------
 
 os.execute("pkill compton")
-os.execute("setxkbmap -layout 'us,ru' -variant 'winkeys' -option 'grp:caps_toggle,grp_led:caps,compose:ralt' &")
-run_once("udisks-glue")
+-- os.execute("setxkbmap -layout 'us,ru' -variant 'winkeys' -option 'grp:caps_toggle,grp_led:caps,compose:ralt' &")
+-- run_once("udisks-glue")
 -- os.execute("sudo /etc/init.d/dcron start &")
-run_once("kbdd")
-run_once("qlipper")
+-- run_once("kbdd")
+-- run_once("qlipper")
 run_once("compton")
+run_once("dropboxd")
+run_once("screen -fa -d -m rtorrent")
+run_once("urxvtd -q -f -o")
 
 --{{Xx----------------------------------------------------------------------------------------------
 

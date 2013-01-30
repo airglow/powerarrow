@@ -14,7 +14,11 @@ white = "#ffffff"
 
 theme = {}
 
-theme.wallpaper_cmd = { "awsetbg /home/rom/.config/awesome/themes/powerarrow/wallpapers/wallpaper-2552963.jpg" }
+if screen.count() == 1 then
+	theme.wallpaper_cmd = { "awsetbg /home/shauder/.config/awesome/themes/powerarrow/wallpapers/wallpaper-2552963.jpg" }
+else
+	theme.wallpaper_cmd = { "feh --bg-max --no-xinerama /home/shauder/.config/awesome/themes/powerarrow/wallpapers/Mountain-Dual-Screen.jpg" }
+end
 
 theme.font                                  = "Terminus 9"
 theme.fg_normal                             = "#AAAAAA"
@@ -132,8 +136,10 @@ theme.widget_music                              = themes_dir .. "/powerarrow/ico
 theme.widget_task                               = themes_dir .. "/powerarrow/icons/powerarrow/task.png"
 theme.widget_mail                               = themes_dir .. "/powerarrow/icons/powerarrow/mail.png"
 theme.arr1                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr1.png"
+theme.arr1a                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr1a.png"
 theme.arr2                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr2.png"
 theme.arr3                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr3.png"
+theme.arr3a                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr3a.png"
 theme.arr4                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr4.png"
 theme.arr5                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr5.png"
 theme.arr6                                      = themes_dir .. "/powerarrow/icons/powerarrow/arr6.png"
