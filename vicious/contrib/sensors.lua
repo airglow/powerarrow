@@ -16,8 +16,8 @@ local string = {
 
 
 -- Sensors: provides access to lm_sensors data
--- module("vicious.contrib.sensors")
-local sensors = {}
+module("vicious.contrib.sensors")
+
 
 -- {{{ Split helper function
 local function datasplit(str)
